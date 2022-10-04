@@ -1,1 +1,118 @@
-{}
+{
+	"Career": {
+		"Developer": {
+			"Todos": {
+				"02/05/2021": [
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					}
+				],
+				"03/05/2021": [
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					}
+				]
+			}
+		},
+		"Disc Jockey": {
+			"Todos": {
+				"02/05/2021": [
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					}
+				],
+				"03/05/2021": [
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					}
+				]
+			}
+		},
+		"Comp Engr": {
+			"Todos": {
+				"02/05/2021": [
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					}
+				],
+				"03/05/2021": [
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					},
+					{
+						"taskName": "Re-Design Sammie Art Website",
+						"notes": "We need to programmatically test the Sammie art site nd work on the top Swiper",
+						"priority": "business"
+					}
+				]
+			}
+		}
+	}
+}

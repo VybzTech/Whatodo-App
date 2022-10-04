@@ -1,12 +1,8 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: file_names
 
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 abstract class CubitStates extends Equatable {}
-
-final int hour = int.parse(DateFormat('HH').format(DateTime.now()));
-bool day = hour >= 7 && hour <= 19;
 
 class InitialState extends CubitStates {
   @override
@@ -15,15 +11,10 @@ class InitialState extends CubitStates {
 
 class WelcomeState extends CubitStates {
   @override
-  List<Object> get props => [day];
+  List<Object> get props => [];
 }
 
-class UserState extends CubitStates {
-  @override
-  List<Object> get props => [day];
-}
-
-// class SignUpState extends CubitStates {
+// class UserState extends CubitStates {
 //   @override
 //   List<Object> get props => [];
 // }
@@ -38,24 +29,11 @@ class HomeState extends CubitStates {
   List<Object> get props => [];
 }
 
-class AddTodoState extends CubitStates {
-  @override
-  List<Object> get props => [];
-}
-
 class AllDetailsState extends CubitStates {
-  final int ind;
-  AllDetailsState(this.ind);
+  final List todos;
+  final String title;
+  AllDetailsState(this.title, this.todos);
 
   @override
-  List<Object> get props => [ind];
-}
-
-class DetailState extends CubitStates {
-  final int no;
-  final int pillNum;
-  DetailState(this.no, this.pillNum);
-
-  @override
-  List<Object> get props => [no, pillNum];
+  List<Object> get props => [title, todos];
 }

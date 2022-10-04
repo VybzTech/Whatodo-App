@@ -1,58 +1,64 @@
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, file_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:whatodo/Cubit/App_Cubits.dart';
 import 'package:whatodo/Styles.dart';
 
 class Dependencies extends StatefulWidget {
-  const Dependencies({Key? key}) : super(key: key);
+  final List<int> dep;
+
+  const Dependencies({Key? key, required this.dep}) : super(key: key);
 
   @override
   State<Dependencies> createState() => _DependenciesState();
 }
 
 class _DependenciesState extends State<Dependencies> {
-  List _dependencies = [
-    {
-      "tip": "Wifi",
-      "ico": Icons.wifi_rounded,
-      "sel": false,
-      "col": Colors.greenAccent
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
+    final depList = BlocProvider.of<AppCubits>(context).dependencies;
+    setState(() {});
+
+    return Column(children: [
+      Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: MontText(
+            MontText(
                 text: 'Is this Task Dependent on Anything',
                 weight: FontWeight.w500,
                 size: S,
-                color: ThemeColors.blueBlack.withOpacity(.8),
-                letter: 0.1,
-              ),
-            ),
+                color: ThemeColors.blueBlack.withOpacity(.85),
+                letter: -0.25),
             SansText(
-              text: 'Select few',
-              weight: FontWeight.w400,
-              size: 10,
-              color: ThemeColors.gray,
-            )
-          ],
-        ),
-        Row(
-            children: List.generate(
-                _dependencies.length,
-                (index) => IconBtn(
-                    tip: _dependencies[index]['tip'],
-                    fnc: () {},
-                    icon: _dependencies[index]['ico'],
-                    sel: _dependencies[index]["sel"]))),
-      ],
-    );
+                text: 'Select few',
+                weight: FontWeight.w400,
+                size: 9,
+                color: ThemeColors.gray)
+          ]),
+      SizedBox(height: S),
+      Container(
+          height: 42,
+          width: double.maxFinite,
+          child: ListView.separated(
+              itemCount: depList.length,
+              scrollDirection: Axis.horizontal,
+              physics: BouncingScrollPhysics(),
+              separatorBuilder: (BuildContext context, int index) =>
+                  SizedBox(width: M / 2),
+              itemBuilder: (BuildContext context, int index) {
+                IconData icon = depList[index]['icon'];
+                IconData AndIcon = depList[index]['AndIcon'];
+                Color col = depList[index]['col'];
+                return IconBtn(
+                  fnc: () => widget.dep.add(index),
+                  icon: icon,
+                  andIcon: AndIcon,
+                  col: col,
+                );
+              })),
+      SizedBox(height: XS),
+    ]);
   }
 }

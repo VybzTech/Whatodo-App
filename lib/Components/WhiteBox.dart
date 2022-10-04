@@ -30,27 +30,22 @@ class WhiteBox extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: pad,
-      margin: marg,
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        color: bg,
-        border: Border.all(
-          color: ThemeColors.offWhite,
-        ),
-        borderRadius: BorderRadius.circular(radius),
-        boxShadow: [
-          BoxShadow(
-              color: shadow,
-              spreadRadius: spread,
-              blurRadius: blur,
-              offset: const Offset(0.0, 1.0))
-        ],
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        padding: pad,
+        margin: marg,
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+            color: bg,
+            border: Border.all(color: ThemeColors.offWhite),
+            borderRadius: BorderRadius.circular(radius),
+            boxShadow: [
+              BoxShadow(
+                  color: shadow,
+                  spreadRadius: spread,
+                  blurRadius: blur,
+                  offset: const Offset(0.0, 1.0))
+            ]),
+        child: child,
+      );
 }

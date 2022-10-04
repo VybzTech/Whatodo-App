@@ -10,27 +10,29 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: L),
+      padding: const EdgeInsets.only(bottom: L / 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            'Images/VybzTech-Logo-${Light ? 'Light' : 'Dark'}.png',
-            fit: BoxFit.contain,
-            width: 18.5,
-            height: 18.5,
+          Opacity(
+            opacity: 0.8,
+            child: Image.asset(
+              'Images/VybzTech-Logo-${Light ? 'Light' : 'Dark'}.png',
+              fit: BoxFit.contain,
+              width: 13,
+              height: 13,
+            ),
           ),
-          SizedBox(width: XS),
+          SizedBox(width: XS - 2),
           MontText(
-            text: 'Vybz Tech',
-            color: Light
-                ? ThemeColors.offWhite
-                : ThemeColors.blueBlack.withOpacity(.8),
-            weight: FontWeight.w500,
-            size: S + 1,
-            letter: .5,
-          ),
+              text: 'VybzTech',
+              color: Light
+                  ? ThemeColors.whitishBlue.withOpacity(.9)
+                  : ThemeColors.blueBlack.withOpacity(.8),
+              weight: FontWeight.w400,
+              size: S - 1,
+              letter: .3)
         ],
       ),
     );

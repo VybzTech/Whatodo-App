@@ -1,28 +1,29 @@
 // ignore_for_file: prefer_const_constructors, file_names
 
 import 'package:flutter/material.dart';
+import 'package:whatodo/Components/Todo.dart';
+import 'package:whatodo/Components/priorityColor.dart';
 import 'package:whatodo/Styles.dart';
 
 class TaskNotes extends StatelessWidget {
-  final String note;
-  const TaskNotes({Key? key, required this.note}) : super(key: key);
+  final Todo task;
+  const TaskNotes({Key? key, required this.task}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       height: XL * 2.5,
+      width: double.maxFinite,
       padding: EdgeInsets.fromLTRB(S, XS, S, S),
-      margin: EdgeInsets.symmetric(horizontal: S, vertical: S),
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: S),
       decoration: BoxDecoration(
-          border: Border.all(color: ThemeColors.whitishBlue, width: 2),
-          color: ThemeColors.whitishBlue.withOpacity(.8),
+          border: Border.all(
+              color: colorUp(task.priority).withOpacity(.9), width: 2),
+          color: colorUp(task.priority).withOpacity(.485),
           borderRadius: BorderRadius.circular(XS)),
       child: SansText(
-        text: note,
-        weight: FontWeight.w400,
-        size: S,
-        color: Colors.white,
-      ),
-    );
-  }
+          align: TextAlign.left,
+          text: '${task.notes} ...',
+          weight: FontWeight.w500,
+          size: S + 3.5,
+          color: Colors.white));
 }

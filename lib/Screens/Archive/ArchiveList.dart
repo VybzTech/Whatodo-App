@@ -19,10 +19,10 @@ class ArchiveList extends StatelessWidget {
     void dismissSlidableItem(BuildContext _, int i, SlideActions actions) {
       switch (actions) {
         case SlideActions.archive:
-          print('Task should Archive');
+          // print('Task should Archive');
           break;
         case SlideActions.delete:
-          print('Task should Archive');
+          // print('Task should Archive');
           break;
       }
     }
@@ -37,15 +37,14 @@ class ArchiveList extends StatelessWidget {
             spread: 0.25,
             blur: XS,
             child: ListView.builder(
-              itemCount: _values.length,
-              itemBuilder: (_, index) {
-                return SlidableWidget(
-                  child: ArchivePill(archive: _values[index], index: index),
-                  onDismissed: (actions) =>
-                      dismissSlidableItem(_, index, actions),
-                );
-              },
-            )));
+                itemCount: _values.length,
+                itemBuilder: (_, index) {
+                  return SlidableWidget(
+                    child: ArchivePill(archive: _values[index], index: index),
+                    onDismissed: (actions) =>
+                        dismissSlidableItem(_, index, actions),
+                  );
+                })));
   }
 }
 
@@ -56,16 +55,14 @@ class ArchivePill extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(M, index == 0 ? 0 : S + 3, M, S),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(
-                bottom: BorderSide(
-                    color: ThemeColors.lightGray.withOpacity(.3),
-                    width: 1.05))),
-        child: Row(
+  Widget build(BuildContext context) => Container(
+      padding: EdgeInsets.fromLTRB(M, index == 0 ? 0 : S + 3, M, S),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+              bottom: BorderSide(
+                  color: ThemeColors.lightGray.withOpacity(.3), width: 1.05))),
+      child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -75,40 +72,28 @@ class ArchivePill extends StatelessWidget {
                 children: [
                   Icon(Icons.folder_open_rounded,
                       color: ThemeColors.blueOriginal),
-                  const SizedBox(
-                    width: S,
-                  ),
+                  const SizedBox(width: S),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MontText(
-                        text: archive['valName'],
-                        weight: FontWeight.w700,
-                        size: M - 2,
-                        color: ThemeColors.blueBlack,
-                      ),
-                      const SizedBox(
-                        height: XS / 3,
-                      ),
-                      SansText(
-                        text: "${archive["valNo"].toString()} Sub Task",
-                        weight: FontWeight.w400,
-                        size: XS,
-                        color: ThemeColors.gray,
-                      )
-                    ],
-                  ),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MontText(
+                            text: archive['valName'],
+                            weight: FontWeight.w700,
+                            size: M - 2,
+                            color: ThemeColors.blueBlack),
+                        const SizedBox(height: XS / 3),
+                        SansText(
+                            text: "${archive["valNo"].toString()} Sub Task",
+                            weight: FontWeight.w400,
+                            size: XS,
+                            color: ThemeColors.gray)
+                      ])
                 ]),
             SansText(
-              text: archive["valDate"],
-              size: S - 2,
-              weight: FontWeight.w300,
-              color: ThemeColors.blueOriginal,
-            )
-          ],
-        ));
-
-    ;
-  }
+                text: archive["valDate"],
+                size: S - 2,
+                weight: FontWeight.w300,
+                color: ThemeColors.blueOriginal)
+          ]));
 }

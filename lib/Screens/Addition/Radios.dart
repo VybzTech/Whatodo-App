@@ -1,13 +1,14 @@
-// ignore_for_file: file_names, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, must_be_immutable, curly_braces_in_flow_control_structures, file_names
 
 import 'package:flutter/material.dart';
 import 'package:whatodo/Styles.dart';
 
-enum TodoTime { recurring, periodic }
+enum TodoTime { periodic, recurring }
 
 class Radios extends StatefulWidget {
-  const Radios({Key? key}) : super(key: key);
+  final TextEditingController control;
 
+  const Radios({Key? key, required this.control}) : super(key: key);
   @override
   State<Radios> createState() => _RadiosState();
 }
@@ -17,66 +18,71 @@ class _RadiosState extends State<Radios> {
 
   @override
   Widget build(BuildContext context) {
-    double width = (MediaQuery.of(context).size.width / 2) - (L * 2.3);
+    double width = (MediaQuery.of(context).size.width / 2) - (XL);
     double height = 50.0;
-    const active = Color(0xFF40B5F8);
+    const active = Color(0xFF297EFD);
     return SizedBox(
-      width: double.maxFinite,
-      // height: XL * 2.2,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            width: width,
-            height: height,
-            child: Center(
-                child: RadioListTile<TodoTime>(
-              dense: true,
-              activeColor: active,
-              groupValue: _timely,
-              value: TodoTime.recurring,
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                'Recurring Task',
-                style: TextStyle(fontSize: S + 1),
-              ),
-              onChanged: (TodoTime? value) {
-                setState(() {
-                  _timely = value;
-                });
-              },
-              //  SansText(
-              //   text: 'Recurring Task',
-              //   weight: FontWeight.w500,
-              //   color: ThemeColors.gray,
-              //   letter: 0.05,
-              //   size: S,
-              // ),
-            )),
-          ),
-          SizedBox(
-            width: width,
-            height: height,
-            child: RadioListTile<TodoTime>(
-              dense: true,
-              activeColor: active,
-              groupValue: _timely,
-              value: TodoTime.periodic,
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                'Periodic Task',
-                style: TextStyle(fontSize: S + 1),
-              ),
-              onChanged: (TodoTime? value) {
-                setState(() {
-                  _timely = value;
-                });
-              },
-            ),
-          )
-        ],
-      ),
-    );
+        width: double.maxFinite,
+        // height: XL * 2.2,
+        height: height,
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                  width: width,
+                  height: height,
+                  child: RadioListTile<TodoTime>(
+                    dense: true,
+                    activeColor: active,
+                    groupValue: _timely,
+                    value: TodoTime.periodic,
+                    contentPadding: EdgeInsets.only(bottom: 5),
+                    selectedTileColor: ThemeColors.blueDark.withOpacity(.6),
+                    title: Text('Periodic Task',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontFamily: 'San',
+                            fontSize: S + 1.5,
+                            fontWeight: FontWeight.w500,
+                            color: ThemeColors.blueBlack.withOpacity(.85))),
+                    onChanged: onChanged,
+                  )),
+              SizedBox(
+                  width: width,
+                  height: height,
+                  child: RadioListTile<TodoTime>(
+                    dense: true,
+                    activeColor: active,
+                    groupValue: _timely,
+                    value: TodoTime.recurring,
+                    contentPadding: EdgeInsets.zero,
+                    selectedTileColor: ThemeColors.blueDark.withOpacity(.4),
+                    title: Text('Recurring Task',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontFamily: 'San',
+                            fontSize: S + 1.5,
+                            fontWeight: FontWeight.w500,
+                            color: ThemeColors.blueBlack.withOpacity(.85))),
+                    onChanged: onChanged,
+                  )),
+              SizedBox(width: 5)
+            ]));
+  }
+
+  onChanged(TodoTime? val) {
+    if (val == TodoTime.recurring) {
+      setState(() {
+        _timely = val;
+        widget.control.text = val!.name;
+      });
+    } else {
+      setState(() {
+        _timely = val;
+        widget.control.text = val!.name;
+      });
+    }
   }
 }

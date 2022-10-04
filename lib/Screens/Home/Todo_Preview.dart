@@ -1,15 +1,21 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_constructors_in_immutables, constant_identifier_names, file_names, prefer_const_literals_to_create_immutables, non_constant_identifier_names, sized_box_for_whitespace
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors,file_names
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:whatodo/Components/Todo.dart';
+import 'package:whatodo/Components/priorityColor.dart';
 import 'package:whatodo/Cubit/App_Cubits.dart';
 import 'package:whatodo/Styles.dart';
+import 'Tasks/Task_Preview.dart';
 
 class TodoPreview extends StatefulWidget {
-  int no;
-  int pillNum;
-  TodoPreview({Key? key, required this.no, required this.pillNum})
-      : super(key: key);
+  final Todo todo;
+  const TodoPreview({
+    Key? key,
+    required this.todo,
+  }) : super(key: key);
 
   @override
   _TodoPreviewState createState() => _TodoPreviewState();
@@ -17,79 +23,111 @@ class TodoPreview extends StatefulWidget {
 
 class _TodoPreviewState extends State<TodoPreview> {
   bool hovered = false;
-
+  // Color todoColor = ThemeColors.blue;
   @override
   Widget build(BuildContext context) {
+    Todo task = widget.todo;
+    final int subs = task.subtasks.length;
+    final List<Map> _dependencies =
+        BlocProvider.of<AppCubits>(context).dependencies;
+
     return Container(
-      height: 50.0,
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            hovered = true;
-          });
-          BlocProvider.of<AppCubits>(context)
-              .getDetails(widget.no, widget.pillNum);
-        },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: XS, top: S, bottom: S, right: S),
-                  child: Icon(
-                    Icons.folder_open_rounded,
-                    size: L + 1,
-                    color: ThemeColors.blue,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MontText(
-                      text: 'Good Morning',
-                      weight: FontWeight.w700,
-                      color: ThemeColors.blueBlack,
-                      size: S + 4,
-                      letter: 0.2,
-                    ),
-                    SizedBox(height: 1.5),
-                    SansText(
-                      text: '3 Sub Task',
-                      size: S - 1,
-                      letter: .4,
-                      weight: FontWeight.w600,
-                      color: ThemeColors.gray,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  hovered = true;
-                });
-                //Goto Todo Page with Current Info
-                BlocProvider.of<AppCubits>(context)
-                    .getDetails(widget.no, widget.pillNum);
-              },
-              constraints: BoxConstraints(maxHeight: M, maxWidth: M + XL),
-              iconSize: L - 1.5,
-              padding: EdgeInsets.zero,
-              color: hovered
-                  ? ThemeColors.blueBlack.withOpacity(.8)
-                  : ThemeColors.lightGray.withOpacity(.8),
-              icon: Icon(Icons.keyboard_arrow_right_rounded),
-            )
-          ],
-        ),
-      ),
-    );
+        height: 55,
+        child: InkWell(
+            onTap: () => handleNav(task),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                left: XS, right: S, top: XS - 1, bottom: S),
+                            child: Icon(
+                                useIcon(MdiIcons.folderOutline,
+                                    Icons.folder_open_rounded),
+                                size: L + 2.5,
+                                color: colorUp(task.priority))),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MontText(
+                                  text: task.taskName,
+                                  weight: FontWeight.w600,
+                                  color: ThemeColors.blueBlack.withOpacity(.9),
+                                  size: S + 2,
+                                  letter: -0.15),
+                              SizedBox(height: 0.75),
+                              SansText(
+                                  text:
+                                      '${subs > 0 ? subs.toString() : 'No'} Sub Task${plural(subs)}',
+                                  size: S - 2,
+                                  letter: .2,
+                                  weight: FontWeight.w400,
+                                  color: ThemeColors.gray),
+                              Container(
+                                  padding: EdgeInsets.only(top: 1),
+                                  width: 100,
+                                  height: S,
+                                  child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: _dependencies.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              SizedBox(width: 1),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (task.dep.contains(index)) {
+                                          return Icon(
+                                              useIcon(
+                                                  _dependencies[index]
+                                                      ['AndIcon'],
+                                                  _dependencies[index]['icon']),
+                                              color: _dependencies[index]
+                                                  ['col'],
+                                              size: 12.5);
+                                        }
+                                        return SizedBox();
+                                      }))
+                            ])
+                      ]),
+                  IconButton(
+                      onPressed: () => handleNav(widget.todo),
+                      iconSize: L - 1.5,
+                      padding: EdgeInsets.zero,
+                      icon: Icon(useIcon(
+                          MdiIcons.chevronRight, Icons.chevron_right_rounded)),
+                      color: hovered
+                          ? ThemeColors.blueBlack.withOpacity(.8)
+                          : ThemeColors.lightGray.withOpacity(.8),
+                      constraints:
+                          BoxConstraints(maxHeight: M, maxWidth: M + XL))
+                ])));
+  }
+
+  void handleNav(Todo todo) {
+    setState(() => hovered = true);
+    Timer(Duration(milliseconds: 150), () => setState(() => hovered = false));
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.black.withOpacity(.15),
+        builder: (context) => BlocProvider<AppCubits>(
+            create: (context) => AppCubits(),
+            child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => Navigator.of(context).pop(),
+                child: DraggableScrollableSheet(
+                  minChildSize: 0.5,
+                  initialChildSize: 0.84,
+                  maxChildSize: 1.0,
+                  builder: (BuildContext context,
+                          ScrollController scrollController) =>
+                      TaskPreview(task: todo),
+                ))));
   }
 }

@@ -14,37 +14,27 @@ class RecycleBin extends StatefulWidget {
 
 class _RecycleBinState extends State<RecycleBin> {
   @override
-  Widget build(BuildContext context) {
-    // return Container();
-    return Column(children: [
-      SizedBox(
-        height: XL,
-      ),
-      Row(
-        children: [
+  Widget build(BuildContext context) => Column(children: [
+        SizedBox(height: XL),
+        Row(children: [
           Padding(
-            padding: const EdgeInsets.only(left: L, top: XS),
-            child: MontText(
-              text: 'Recycle Bin',
-              weight: FontWeight.w700,
-              size: L + 2,
-              color: ThemeColors.blueBlack.withOpacity(.85),
-            ),
-          ),
-        ],
-      ),
-      SearchBin(),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: XL, vertical: M),
-        child: SansText(
-          size: S,
-          text:
-              'Todos are available for 30 days after deletion. After a month, respective Todos qill be permanently deleted.',
-          weight: FontWeight.w600,
-          color: ThemeColors.blueBlack.withOpacity(.35),
-        ),
-      ),
-      BinList(),
-    ]);
-  }
+              padding: const EdgeInsets.only(left: L, top: XS),
+              child: MontText(
+                  text: 'Recycle Bin',
+                  weight: FontWeight.w700,
+                  letter: -0.5,
+                  size: L + 2,
+                  color: ThemeColors.blueBlack.withOpacity(.85)))
+        ]),
+        // SearchBin(),
+        // Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: XL, vertical: M),
+        //     child: SansText(
+        //         size: S,
+        //         text:
+        //             'Todos are available for 30 days after deletion. After a month, respective Todos will be permanently deleted.',
+        //         weight: FontWeight.w600,
+        //         color: ThemeColors.blueBlack.withOpacity(.35))),
+        // BinList()
+      ]);
 }

@@ -1,64 +1,56 @@
 // ignore_for_file: prefer_const_constructors, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:whatodo/Components/Todo.dart';
+import 'package:whatodo/Cubit/App_Cubits.dart';
 import 'package:whatodo/Styles.dart';
 
 class TaskDep extends StatelessWidget {
-  const TaskDep({Key? key}) : super(key: key);
+  final Todo task;
+  const TaskDep({Key? key, required this.task}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final dependencies = BlocProvider.of<AppCubits>(context).dependencies;
+
     return Padding(
-      padding: EdgeInsets.only(top: XS - 2, bottom: XS - 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+        padding: EdgeInsets.only(top: S, bottom: S, right: 8),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.mic_none_rounded,
-                    color: Colors.teal,
-                    size: M - 1,
-                  )),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.paid_rounded,
-                    color: Colors.lightGreenAccent[700],
-                    size: M - 1,
-                  )),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.phone_enabled_rounded,
-                    color: Colors.greenAccent,
-                    size: M - 1,
-                  )),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              MontText(
-                text: 'Thur, 13th Mar',
-                weight: FontWeight.w600,
-                color: ThemeColors.blueBlack.withOpacity(.65),
-                size: S + 2,
-              ),
-              SizedBox(height: 3),
-              SansText(
-                text: 'Date Created',
-                weight: FontWeight.w400,
-                color: ThemeColors.gray.withOpacity(.7),
-                size: S - 2,
-              )
-            ],
-          )
-        ],
-      ),
-    );
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: dependencies.map((dep) {
+                    if (task.dep.contains(dep['index'])) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 17),
+                        child: Icon(useIcon(dep['AndIcon'], dep['icon']),
+                            size: M, color: dep['col']),
+                      );
+                    }
+                    return SizedBox();
+                  }).toList()),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    MontText(
+                        text:
+                            DateFormat('EEE, dd LLL').format(task.createdTime),
+                        weight: FontWeight.w500,
+                        color: ThemeColors.blueBlack.withOpacity(.5),
+                        size: S + 1.75),
+                    SizedBox(height: 2),
+                    SansText(
+                        text: 'Date Created',
+                        weight: FontWeight.w400,
+                        color: ThemeColors.gray.withOpacity(.5),
+                        size: S - 1.5)
+                  ])
+            ]));
   }
 }

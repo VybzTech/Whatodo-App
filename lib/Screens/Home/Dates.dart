@@ -1,140 +1,122 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_constructors_in_immutables, constant_identifier_names, file_names, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: file_names, prefer_const_constructors_in_immutables, prefer_const_constructors, unused_local_variable, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:whatodo/Styles.dart';
 
 class Dates extends StatefulWidget {
-  const Dates({Key? key}) : super(key: key);
+  Dates({Key? key}) : super(key: key);
 
   @override
   _DatesState createState() => _DatesState();
 }
 
 class _DatesState extends State<Dates> {
-  DateTime today = DateTime.now();
-  late ScrollController _scrollController;
-
-//DEFINE VARIABLES
   String currentMonth = '';
-  int daysInMonth = 0;
-  dynamic monthly = [];
-  double pos = 0;
+  double scrollPosition = 0;
+  List<DateTime> allDates = [];
+  DateTime today = DateTime.now();
+  int thisYear = DateTime.now().year;
+  late ScrollController _scrollController;
+  final Tween<Offset> _offset = Tween(begin: Offset(0, 2), end: Offset(0, 0));
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
+  int getDaysInMonth(int year, int start, int end) => DateTimeRange(
+          start: DateTime(year, start, 0), end: DateTime(year, end, 0))
+      .duration
+      .inDays;
+
+  DateTime buildDateTimes(int index) {
+    int monthNo = index + 1;
+    int noOfDaysInMonth = getDaysInMonth(thisYear, monthNo, monthNo + 1);
+    for (var i = 1; i <= noOfDaysInMonth; i++) {
+      DateTime loopDays = DateTime(thisYear, monthNo, i);
+      allDates.add(loopDays);
+    }
+    return today;
+  }
+
   @override
   void initState() {
     super.initState();
-    daysInMonth = DateTime(today.year, today.month + 1, 0)
-        .day; //SET MONTH'S NO FROM TODAY'S MONTH
-    currentMonth =
-        DateFormat('LLLL').format(today).toUpperCase(); //SET TODAY'S MONTH
+    // SET INITIAL MONTH
+    currentMonth = DateFormat('LLLL').format(today).toUpperCase();
+    List<DateTime> monthly =
+        List.generate(12, (index) => buildDateTimes(index));
 
-    for (DateTime indexDay = DateTime(today.year, today.month, 1);
-        indexDay.month == today.month;
-        indexDay = indexDay.add(Duration(days: 1))) {
-      //LOOP EVERY DAY TO LIST FOR TODAY'S MONTH
-      monthly.add(indexDay);
-    }
     _scrollController = ScrollController();
-    _scrollController.addListener(() {});
+    _scrollController.addListener(() {
+      //SET SCROLL POSITION
+      setState(() => scrollPosition = _scrollController.position.pixels);
+      checkScroll();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        //SCROLL TO MIDDLE AFTER WIDGET LOADS
+        scrollToMiddle());
+  }
 
-    // scrollToMiddle();
+  checkScroll() {
+    // int supposedIndex = scrollPosition ~/ 53.085;
+    int supposedIndex = scrollPosition ~/ 48.85;
+    setState(() => currentMonth =
+        DateFormat('LLLL').format(allDates[supposedIndex + 4]).toUpperCase());
   }
 
   @override
-  Widget build(BuildContext context) {
-    scrollToMiddle() {
-      _scrollController.hasClients
-          ? _scrollController.position.animateTo(
-              ((_scrollController.position.maxScrollExtent / daysInMonth) *
-                      today.day) +
-                  (3.5 * today.day),
-              duration: Duration(milliseconds: 100),
-              curve: Curves.bounceIn)
-          : null;
-    }
+  Widget build(BuildContext context) => Column(children: [
+        Container(
+            width: double.maxFinite,
+            height: 83,
+            child: AnimatedList(
+                key: _listKey,
+                initialItemCount: allDates.length, //365
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: (_, i, a) {
+                  DateTime day = allDates[i];
+                  bool pill = day.day == today.day && day.month == today.month;
+                  return SlideTransition(
+                      position: a.drive(_offset),
+                      child: pill
+                          ? DatePill(
+                              date: day.day,
+                              day:
+                                  DateFormat('EEE').format(today).toUpperCase(),
+                              control: _scrollController)
+                          : NormalPill(
+                              date: day.day,
+                              day: DateFormat('EEE').format(day).toUpperCase(),
+                              control: _scrollController));
+                })),
+        SizedBox(height: XS / 2),
+        InkWell(
+            onTap: scrollToMiddle,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(useIcon(MdiIcons.calendarMonth, Icons.calendar_month),
+                      size: S + 3),
+                  SizedBox(width: XS / 2),
+                  MontText(
+                    text: currentMonth,
+                    size: S - 0.25,
+                    letter: -0.1,
+                    weight: FontWeight.w400,
+                  )
+                ]))
+      ]);
 
-    return Column(children: [
-      Container(
-        width: double.maxFinite,
-        height: 85.0,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: daysInMonth,
-            controller: _scrollController,
-            itemBuilder: (_, index) {
-              //PARTICULAR DAY IN MONTH
-              final day = monthly[index];
-              if (day.day == today.day) {
-                return DatePill(
-                    control: _scrollController,
-                    pos: pos,
-                    date: today.day,
-                    day: DateFormat('EEE').format(today).toUpperCase());
-              }
-              return Container(
-                margin: const EdgeInsets.only(right: S + 1),
-                padding: const EdgeInsets.symmetric(
-                    vertical: XS, horizontal: XS + 1),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SansText(
-                      text: DateFormat('EEE').format(day).toUpperCase(),
-                      size: S,
-                      weight: FontWeight.w400,
-                    ),
-                    SizedBox(
-                      height: 3.0,
-                    ),
-                    MontText(
-                      text: day.day.toString(),
-                      size: M,
-                      weight: FontWeight.w400,
-                    ),
-                  ],
-                ),
-              );
-            }),
-      ),
-      SizedBox(
-        height: XS - 3,
-      ),
-      InkWell(
-        onTap: () {
-          _scrollController.position.animateTo(
-              ((_scrollController.position.maxScrollExtent / daysInMonth) + 5) *
-                  today.day,
-              duration: Duration(milliseconds: 100),
-              curve: Curves.bounceIn);
-        },
-        child: MontText(
-          text: currentMonth,
-          size: S + .5,
-          weight: FontWeight.w400,
-        ),
-      )
-    ]);
+  scrollToMiddle() {
+    int todayIndex = allDates.indexWhere((datetimes) =>
+            datetimes.day == today.day && datetimes.month == today.month) +
+        1;
+    double halfWidth = MediaQuery.of(context).size.width / 2;
+    //Increase to Move DatePill Left   53.08
+    double pos = (todayIndex * 48.85) - halfWidth;
+    _scrollController.position.animateTo(pos,
+        duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
   }
 }
-
-
-
-
-
-//SORITNG DATES
-/**
- * List <String> dates = ["2021-12-23","..."];
- * 
- * dates.sort((a,b){
- * return
- * DateTime.parse(a).compareTo(DateTime.parse(b));
- * })
- * 
- * Column with children
- * dates.map((dateOne){
- * Text(dateOne);
- * })
- * 
- * 
- */

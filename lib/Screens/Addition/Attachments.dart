@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, file_names
 
 import 'package:flutter/material.dart';
 import 'package:whatodo/Styles.dart';
@@ -13,7 +13,6 @@ class Attachment extends StatefulWidget {
 class _AttachmentState extends State<Attachment> {
   dynamic noAttached = 0;
   String plural = '';
-  // Color btnCol = ThemeColors.gray.withOpacity(.8);
 
   List Attachments = [
     {
@@ -38,22 +37,17 @@ class _AttachmentState extends State<Attachment> {
   void initState() {
     super.initState();
     if (noAttached == 0) {
-      setState(() {
-        noAttached = 'No';
-      });
+      setState(() => noAttached = 'No');
     } else if (noAttached > 1) {
-      setState(() {
-        plural = 's';
-      });
+      setState(() => plural = 's');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, M - 3, 12, XS),
-      child: Column(
-        children: [
+        padding: const EdgeInsets.fromLTRB(12, M - 3, 12, XS),
+        child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -76,27 +70,21 @@ class _AttachmentState extends State<Attachment> {
           SizedBox(
             height: XS,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: List.generate(
-                Attachments.length,
-                (int index) => IconBtn(
-                    sel: Attachments[index]["sel"],
-                    tip: Attachments[index]["tip"],
-                    fnc: () {
-                      changeSel(index);
-                    },
-                    icon: Attachments[index]["ico"])),
-          ),
-        ],
-      ),
-    );
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   children: List.generate(
+          //       Attachments.length,
+          //       (int index) => IconBtn(
+          //           sel: Attachments[index]["sel"],
+          //           tip: Attachments[index]["tip"],
+          //           fnc: () {
+          //             changeSel(index);
+          //           },
+          //           icon: Attachments[index]["ico"])),
+          // ),
+        ]));
   }
 
-  void changeSel(int index) {
-    print(index);
-    Attachments[index]["sel"] = true;
-    // print(sel);
-  }
+  void changeSel(int index) => Attachments[index]["sel"] = true;
 }
